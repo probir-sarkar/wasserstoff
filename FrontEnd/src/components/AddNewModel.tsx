@@ -79,7 +79,7 @@ export default function AddNewToken() {
                 Close
               </Button>
               <Button color="primary" type="submit">
-                Action
+                Add Project
               </Button>
             </ModalFooter>
           </form>
