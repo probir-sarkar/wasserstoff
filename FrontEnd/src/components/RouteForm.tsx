@@ -6,6 +6,8 @@ import { tokenWithRoutesSchema } from "@/schema/tokenSchema";
 import { Button, Input } from "@nextui-org/react";
 import { RxCross1 } from "react-icons/rx";
 import { GoPlus } from "react-icons/go";
+import { toast } from "sonner";
+import { apiClient } from "@/config/axios";
 
 type Inputs = z.infer<typeof tokenWithRoutesSchema>;
 
@@ -28,10 +30,19 @@ const RouteForm: React.FC<{ data: Inputs }> = ({ data }) => {
     reset(data);
     replace(data.routes);
   }, [data, reset, replace]);
+  async function onSubmit(data: Inputs) {
+    try {
+      const res = await apiClient.put(`/token`, data);
+      console.log(res.data);
+      toast.success("Project updated successfully");
+    } catch (e) {
+      toast.error("Failed to update project");
+    }
+  }
 
   return (
     <div className="max-w-2xl mx-auto">
-      <form onSubmit={handleSubmit((data) => console.log(data))}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <h2 className="text-2xl font-semibold my-4 ">Project Details</h2>
         <div className="grid gap-4 md:grid-cols-2">
           <Input

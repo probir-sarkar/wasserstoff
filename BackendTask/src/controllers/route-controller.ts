@@ -53,31 +53,43 @@ export const createToken: RequestHandler = async (req, res) => {
 };
 
 const addRoutesSchema = z.object({
-  tokenId: z.number(),
+  id: z.number(),
+  name: z.string().min(3),
+  healthRoute: z.string().min(3),
+  token: z.string(),
   routes: z.array(
     z.object({
-      url: z.string(),
-      weight: z.number().optional(),
+      url: z.string().min(1),
+      weight: z.number().optional().default(1),
     })
   ),
 });
 
 export const addRoutes: RequestHandler = async (req, res) => {
   try {
-    const { tokenId, routes: inComingRoutes } = addRoutesSchema.parse(req.body);
+    const { id, routes: inComingRoutes, name, healthRoute } = addRoutesSchema.parse(req.body);
     const tokenData = await db.query.token.findFirst({
-      where: (token, { eq }) => eq(token.id, tokenId),
+      where: (token, { eq }) => eq(token.id, id),
     });
     if (!tokenData) {
       return res.status(404).send({ message: "Token not found" });
     }
-    await db.delete(routes).where(eq(routes.tokenId, tokenId));
-    await db.insert(routes).values(
-      inComingRoutes.map((route) => ({
-        ...route,
-        tokenId,
-      }))
-    );
+    await db.transaction(async (trx) => {
+      await trx
+        .update(token)
+        .set({
+          name,
+          healthRoute,
+        })
+        .where(eq(token.id, id));
+      await trx.delete(routes).where(eq(routes.tokenId, id));
+      await trx.insert(routes).values(
+        inComingRoutes.map((route) => ({
+          ...route,
+          tokenId: id,
+        }))
+      );
+    });
     res.status(201).send({ message: "Routes added successfully" });
   } catch (error) {
     res.status(500).send({ message: "Failed to add routes", error });

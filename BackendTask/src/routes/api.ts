@@ -13,8 +13,7 @@ api.get("/route", async (req, res) => {
   });
   res.json(result);
 });
-api.post("/route", addRoutes);
 
-api.route("/token").get(tryCatch(allTokens)).post(tryCatch(createToken));
+api.route("/token").get(tryCatch(allTokens)).post(tryCatch(createToken)).put(tryCatch(addRoutes));
 api.route("/token/:id").get(tryCatch(getTokenById));
 export default api;
