@@ -3,12 +3,14 @@ import env from "@/env";
 import cors from "cors";
 import { errorHandler } from "@/middlewares/errorHandler";
 import { loadBalance } from "./controllers/load-balance";
+import api from "./routes/api";
 
 const app: Express = express();
 
 app.use(express.json());
 app.use(cors({ origin: "*" }));
 
+app.use("/api", api);
 app.use((req, res, next) => {
   console.log(`Received request for: ${req.url}`);
   next();

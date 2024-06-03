@@ -1,11 +1,19 @@
 import { relations } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { createId } from "@paralleldrive/cuid2";
+import { sql } from "drizzle-orm";
 
 export const token = sqliteTable("token", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name").notNull(),
-  healthRoute: text("healthRoute"),
-  token: text("token").notNull(),
+  healthRoute: text("health_route"),
+  token: text("token")
+    .notNull()
+    .$defaultFn(() => createId()),
+  createdAt: text("created_at").default(sql`(current_timestamp)`),
+  updatedAt: text("updated_at")
+    .default(sql`(current_timestamp)`)
+    .$onUpdate(() => sql`(current_timestamp)`),
 });
 
 export const routes = sqliteTable("routes", {
@@ -14,7 +22,11 @@ export const routes = sqliteTable("routes", {
   weight: integer("weight").notNull(),
   tokenId: integer("tokenId")
     .notNull()
-    .references(() => token.id),
+    .references(() => token.id, { onDelete: "cascade" }),
+  createdAt: text("created_at").default(sql`(current_timestamp)`),
+  updatedAt: text("updated_at")
+    .default(sql`(current_timestamp)`)
+    .$onUpdate(() => sql`(current_timestamp)`),
 });
 export const tokenRelations = relations(token, ({ many }) => ({
   routes: many(routes),

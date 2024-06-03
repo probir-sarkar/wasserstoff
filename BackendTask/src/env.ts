@@ -3,7 +3,7 @@ import "dotenv/config";
 import z from "zod";
 
 const envSchema = z.object({
-  port: z.string(),
+  port: z.number(),
   dbUrl: z.string(),
   dbAuthToken: z.string(),
 });
