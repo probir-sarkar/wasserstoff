@@ -2,6 +2,8 @@ import useSWR from "swr";
 import { fetcher } from "@/config/axios";
 import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell } from "@nextui-org/react";
 import { tokensSchema } from "@/schema/tokenSchema";
+import { LuExternalLink } from "react-icons/lu";
+
 import { Link } from "react-router-dom";
 
 const AllTokenTable = () => {
@@ -35,7 +37,9 @@ const AllTokenTable = () => {
                 {import.meta.env.VITE_API_URL}/{token.id}
               </TableCell>
               <TableCell>
-                <Link to={`/${token.id}`}>Details</Link>
+                <Link to={`/${token.id}`}>
+                  <LuExternalLink />
+                </Link>
               </TableCell>
             </TableRow>
           ))}

@@ -41,7 +41,7 @@ const RouteForm: React.FC<{ data: Inputs }> = ({ data }) => {
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="">
       <form onSubmit={handleSubmit(onSubmit)}>
         <h2 className="text-2xl font-semibold my-4 ">Project Details</h2>
         <div className="grid gap-4 md:grid-cols-2">

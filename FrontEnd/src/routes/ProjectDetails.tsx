@@ -1,9 +1,10 @@
 import { fetcher } from "@/config/axios";
 import { z } from "zod";
 import { tokenWithRoutesSchema } from "@/schema/tokenSchema";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import useSWR from "swr";
 import RouteForm from "@/components/RouteForm";
+import { IoIosArrowRoundBack } from "react-icons/io";
 
 type TokenData = z.infer<typeof tokenWithRoutesSchema>;
 
@@ -28,7 +29,11 @@ const ProjectDetails = () => {
   if (!parsedData) return <main>Invalid data format</main>;
 
   return (
-    <div>
+    <div className="max-w-2xl mx-auto my-8">
+      <Link to="/" className=" underline">
+        <IoIosArrowRoundBack className="inline-block" />
+        Back to all projects
+      </Link>
       <h1 className="text-center text-3xl font-extrabold my-12">Update Project Details</h1>
       <RouteForm data={parsedData} />
     </div>
