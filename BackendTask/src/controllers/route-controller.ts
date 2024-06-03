@@ -2,7 +2,7 @@ import { db } from "@/configs/db";
 import { token, routes } from "@/db/schema";
 import { createId } from "@paralleldrive/cuid2";
 import { eq } from "drizzle-orm";
-import e, { RequestHandler } from "express";
+import { RequestHandler } from "express";
 import { z } from "zod";
 
 export const allRoutes: RequestHandler = async (req, res) => {
@@ -16,11 +16,21 @@ export const allRoutes: RequestHandler = async (req, res) => {
 
 export const allTokens: RequestHandler = async (req, res) => {
   // const result = await db.select().from(token).rightJoin(routes, eq(token.id, routes.tokenId));
-  const result = await db.query.token.findMany({
+  const result = await db.query.token.findMany();
+  res.json(result);
+};
+
+export const getTokenById: RequestHandler = async (req, res) => {
+  const { id } = req.params;
+  const result = await db.query.token.findFirst({
+    where: (token, { eq }) => eq(token.id, +id),
     with: {
       routes: true,
     },
   });
+  if (!result) {
+    return res.status(404).send({ message: "Token not found" });
+  }
   res.json(result);
 };
 const createTokenSchema = z.object({

@@ -1,8 +1,8 @@
 import useSWR from "swr";
 import { fetcher } from "@/config/axios";
 import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell } from "@nextui-org/react";
-import AllRoutes from "./AllRoutes";
-import { tokenSchema } from "@/schema/tokenSchema";
+import { tokensSchema } from "@/schema/tokenSchema";
+import { Link } from "react-router-dom";
 
 const AllTokenTable = () => {
   const { data, error, isLoading } = useSWR("/token", fetcher);
@@ -22,7 +22,7 @@ const AllTokenTable = () => {
           <TableColumn>Health Route</TableColumn>
           <TableColumn>Token</TableColumn>
           <TableColumn>End Point</TableColumn>
-          <TableColumn>Routes</TableColumn>
+          <TableColumn>Details</TableColumn>
         </TableHeader>
         <TableBody>
           {parsedData.map((token) => (
@@ -35,7 +35,7 @@ const AllTokenTable = () => {
                 {import.meta.env.VITE_API_URL}/{token.id}
               </TableCell>
               <TableCell>
-                <AllRoutes routes={token.routes} />
+                <Link to={`/${token.id}`}>Details</Link>
               </TableCell>
             </TableRow>
           ))}
@@ -49,7 +49,7 @@ export default AllTokenTable;
 
 function parseToken(data: unknown) {
   try {
-    return tokenSchema.parse(data);
+    return tokensSchema.parse(data);
   } catch (e) {
     console.error(e);
     return [];

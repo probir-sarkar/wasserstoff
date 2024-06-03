@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { db } from "@/configs/db";
-import { createToken, allTokens, addRoutes } from "@/controllers/route-controller";
+import { createToken, allTokens, addRoutes, getTokenById } from "@/controllers/route-controller";
+import { tryCatch } from "@/utils";
 
 const api = Router();
 
@@ -14,5 +15,6 @@ api.get("/route", async (req, res) => {
 });
 api.post("/route", addRoutes);
 
-api.route("/token").get(allTokens).post(createToken);
+api.route("/token").get(tryCatch(allTokens)).post(tryCatch(createToken));
+api.route("/token/:id").get(tryCatch(getTokenById));
 export default api;
