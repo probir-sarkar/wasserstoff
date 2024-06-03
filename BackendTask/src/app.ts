@@ -11,11 +11,8 @@ app.use(express.json());
 app.use(cors({ origin: "*" }));
 
 app.use("/api", api);
-app.use((req, res, next) => {
-  console.log(`Received request for: ${req.url}`);
-  next();
-});
-app.use(loadBalance);
+
+app.use("/:id", loadBalance);
 
 // Route not found handler, must be the last route and before the global error handler, It will handle all routes that are not found
 app.all("*", (req, res) => res.status(404).json({ message: "Route not found" }));

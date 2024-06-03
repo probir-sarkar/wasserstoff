@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { db } from "@/configs/db";
-import { createToken, allTokens } from "@/controllers/route-controller";
+import { createToken, allTokens, addRoutes } from "@/controllers/route-controller";
 
 const api = Router();
 
@@ -12,6 +12,7 @@ api.get("/route", async (req, res) => {
   });
   res.json(result);
 });
+api.post("/route", addRoutes);
 
 api.route("/token").get(allTokens).post(createToken);
 export default api;

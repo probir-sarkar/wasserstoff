@@ -7,6 +7,7 @@ import { z } from "zod";
 import { Input } from "@nextui-org/react";
 import { apiClient } from "@/config/axios";
 import { toast } from "sonner";
+import { useSWRConfig } from "swr";
 
 const inputSchema = z.object({
   name: z.string().min(3, { message: "Name must be at least 3 characters" }),
@@ -17,6 +18,7 @@ type Inputs = z.infer<typeof inputSchema>;
 
 export default function AddNewToken() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const { mutate } = useSWRConfig();
   const {
     register,
     handleSubmit,
@@ -24,12 +26,17 @@ export default function AddNewToken() {
     formState: { errors },
   } = useForm<Inputs>({
     resolver: zodResolver(inputSchema),
+    defaultValues: {
+      name: "",
+      healthRoute: "/health",
+    },
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
       await apiClient.post("/token", data);
       onClose();
+      mutate("/token");
       toast.success("Token added successfully");
     } catch (error) {
       console.error(error);
@@ -43,7 +50,7 @@ export default function AddNewToken() {
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           <ModalHeader className="flex items-center gap-1 ">
-            Modal Title{" "}
+            Add New Project
             <Tooltip content="Reset Form">
               <BiReset onClick={() => reset()} />
             </Tooltip>
