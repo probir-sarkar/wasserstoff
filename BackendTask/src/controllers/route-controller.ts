@@ -4,6 +4,7 @@ import { createId } from "@paralleldrive/cuid2";
 import { eq } from "drizzle-orm";
 import { RequestHandler } from "express";
 import { z } from "zod";
+import { redis } from "@/configs/redis";
 
 export const allRoutes: RequestHandler = async (req, res) => {
   const result = await db.query.routes.findMany({
@@ -90,6 +91,7 @@ export const addRoutes: RequestHandler = async (req, res) => {
         }))
       );
     });
+    await redis.del(`token:${id}`);
     res.status(201).send({ message: "Routes added successfully" });
   } catch (error) {
     res.status(500).send({ message: "Failed to add routes", error });
