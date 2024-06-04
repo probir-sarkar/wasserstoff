@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  dragonfly:
+    image: 'docker.dragonflydb.io/dragonflydb/dragonfly'
+    ulimits:
+      memlock: -1
+    ports:
+      - "6379:6379"
+    volumes:
+      - dragonflydata:/data
+
+  wasserstoff:
+    image: "wasswerstoff:latest"
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_URL=libsql://wasserstoff-probir-sarkar.turso.io
+      - DATABASE_AUTH_TOKEN=eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3MTc0MTEzNDMsImlkIjoiYmFlNjAxNjgtNDg0Ni00N2ZhLTgxMGYtYWQ0YjVmMDRkZTZlIn0.Bl8QIkclWSlw0bQi7Zns3AKQmkpq4pR2nxmWwQONfpQZlgcDn0IvcgiG3eGaEZuRycZQOExgFRQqgDHqyDi8Bg
+      - REDIS_URL=redis://dragonfly:6379
+volumes:
+  dragonflydata:

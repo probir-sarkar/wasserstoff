@@ -1,3 +1,9 @@
-import Redis from "ioredis";
+import Redis, { RedisOptions } from "ioredis";
 
-export const redis = new Redis("redis://localhost:6379");
+const redisUrl = process.env.REDIS_URL;
+
+if (!redisUrl) {
+  throw new Error("REDIS_URL environment variable is not defined.");
+}
+
+export const redis = new Redis(redisUrl as RedisOptions);

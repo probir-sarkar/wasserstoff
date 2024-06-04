@@ -23,3 +23,14 @@ app.use(errorHandler);
 app.listen(env.port, () => {
   console.log(`Server is running on port ${env.port}`);
 });
+
+// For testing purpose
+const test: Express = express();
+test.get("/", (req, res) => res.send("Hello World!"));
+test.get("/health", (req, res) => res.send("OK"));
+const ports = [4000, 4001, 4002, 4003, 4004, 4005, 4006, 4007, 4008, 4009];
+ports.forEach((port) => {
+  test.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  });
+});

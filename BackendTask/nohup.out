@@ -1,0 +1,38 @@
+Server is running on port 8080
+Forwarding request to: http://localhost:4002
+Forwarding request to: http://localhost:4003
+Forwarding request to: http://localhost:4000
+Forwarding request to: http://localhost:4001
+Forwarding request to: http://localhost:4002
+RINUSE: address already in use :::4000
+    at Server.setupListenHandle [as _listen2] (node:net:1897:16)
+    at listenInCluster (node:net:1945:12)
+    at Server.listen (node:net:2037:7)
+    at Function.listen (D:\assignment\wasserstoff\BackendTask\node_modules\.pnpm\express@4.19.2\node_modules\express\lib\application.js:635:24)
+    at D:\assignment\wasserstoff\BackendTask\demo\app.js:14:7
+    at Array.forEach (<anonymous>)
+    at Object.<anonymous> (D:\assignment\wasserstoff\BackendTask\demo\app.js:13:7)
+    at Module._compile (node:internal/modules/cjs/loader:1369:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1427:10)
+    at Module.load (node:internal/modules/cjs/loader:1206:32)
+Emitted 'error' event on Server instance at:
+    at emitErrorNT (node:net:1924:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21) {
+  code: 'EADDRINUSE',
+  errno: -4091,
+  syscall: 'listen',
+  address: '::',
+  port: 4000
+}
+
+Node.js v20.12.0
+Server is running on port 4000
+Server is running on port 4001
+Server is running on port 4002
+Server is running on port 4003
+Server is running on port 4004
+Server is running on port 4000
+Server is running on port 4001
+Server is running on port 4002
+Server is running on port 4003
+Server is running on port 4004
